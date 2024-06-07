@@ -34,7 +34,7 @@ const UserController = {
         message: "User registered successfully",
       });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   },
   login: async function (req: Request, res: Response, next: NextFunction) {
@@ -44,7 +44,6 @@ const UserController = {
       const user = await UserSchema.findOne({
         email,
       });
-
       if (!user) {
         console.log("User not found");
         return next(createHttpError.NotFound("User not found"));
@@ -61,7 +60,7 @@ const UserController = {
         message: "User logged in successfully",
       });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   },
 };
