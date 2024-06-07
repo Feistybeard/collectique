@@ -11,8 +11,7 @@ function validateMiddleware(schema: ZodType<any, any>) {
       const errorMessages = (error as ZodError).errors.map(
         (err) => err.message
       );
-      throw createHttpError.BadRequest(errorMessages.join(", "));
-      // res.status(400).json({ success: false, errors: errorMessages });
+      return next(createHttpError.BadRequest(errorMessages.join(", ")));
     }
   };
 }
