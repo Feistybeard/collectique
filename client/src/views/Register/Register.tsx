@@ -12,6 +12,7 @@ export default function RegisterForm() {
   const { toast } = useToast();
   const [registerUser] = useRegisterUserMutation();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);

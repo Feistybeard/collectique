@@ -52,7 +52,7 @@ const UserController = {
       const isPasswordValid = await user.verifyPassword(password);
       if (!isPasswordValid) {
         console.log("isPasswordValid", isPasswordValid);
-        return next(createHttpError.NotFound("Invalid password"));
+        return next(createHttpError.Unauthorized("Invalid password"));
       }
 
       return res.status(200).json({

@@ -2,9 +2,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import config from '../config';
 
 export interface User {
-  email: string;
-  password: string;
-  role: string;
+  email: string | null;
+  password: string | null;
+  role: string | null;
   // message: string;
 }
 
@@ -22,7 +22,7 @@ const api = createApi({
   endpoints: (builder) => ({
     loginUser: builder.mutation<ReturnResponse, Partial<User>>({
       query: (formData) => ({
-        url: 'user',
+        url: 'user/login',
         method: 'POST',
         body: formData,
       }),
