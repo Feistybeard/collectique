@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,11 +8,13 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useRegisterUserMutation } from '@/services/api';
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const { toast } = useToast();
   const [registerUser] = useRegisterUserMutation();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
@@ -24,22 +27,24 @@ export default function LoginForm() {
         title: 'Passwords do not match',
         description: 'Please make sure the passwords match',
       });
+      setIsSubmitting(false);
       return;
     }
 
-    const data = {
+    const newUser = {
       email,
       password,
       role: 'user',
     };
 
     try {
-      const test = await registerUser(data).unwrap();
-      if (!test.success) {
+      const response = await registerUser(newUser).unwrap();
+      if (!response.success) {
         toast({
           title: 'Error',
-          description: test.message,
+          description: response.message,
         });
+        setIsSubmitting(false);
         return;
       }
 
@@ -51,12 +56,19 @@ export default function LoginForm() {
       setTimeout(() => {
         window.location.href = '/';
       }, 3000);
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: error as string,
-      });
-      return;
+    } catch (error: any) {
+      setIsSubmitting(false);
+      if (error.data) {
+        toast({
+          title: 'Error',
+          description: error.data.message,
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: 'An error occurred, please try again later.',
+        });
+      }
     }
   };
 
@@ -89,7 +101,7 @@ export default function LoginForm() {
                 </div>
                 <Input id='password-retype' name='password-retype' type='password' required />
               </div>
-              <Button type='submit' className='w-full'>
+              <Button type='submit' className='w-full' disabled={isSubmitting}>
                 Create an account
               </Button>
             </div>
