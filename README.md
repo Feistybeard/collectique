@@ -13,8 +13,8 @@ Collectique is an app designed to help you create and manage lists of items you 
 ## Installation
 
 1. Clone the repository: `git clone https://github.com/feistybeard/collectique.git`
-2. Install dependencies: `npm install`
-3. Start the app: `npm start`
+2. Cd into client, server folder respectivly and install dependencies with: `npm install`
+3. To start, cd into client, server folder respectivly and run: `npm run dev` (will be update later)
 
 ## Usage
 
